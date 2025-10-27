@@ -11,22 +11,31 @@
 </head>
 <body>
   <div class="app">
-    <div class="topbar" style="display:flex;align-items:center;justify-content:flex-end;padding:8px 16px"></div>
-    <div id="sidebar" class="sidebar hidden">
+    <!-- Topbar com badge -->
+    <div class="topbar">
+      <div id="userBadge" class="badge hidden"></div>
+    </div>
+
+    <!-- Barra lateral -->
+    <div id="sidebar" class="sidebar">
       <div class="toggle">☰</div>
       <ul>
-        <li data-target="home">🏠 Home</li>
-        <li data-target="abastecimento">⛽ Abastecimento</li>
-        <li data-target="emprestimo">💳 Empréstimo</li>
-        <li data-target="relatorios">📊 Relatórios</li>
-        <li data-target="diferencas">⚖️ Diferenças</li>
+        <li data-target="home">🏠</li>
+        <li data-target="abastecimento">💵</li>
+        <li data-target="emprestimo">💳</li>
+        <li data-target="relatorios">📊</li>
+        <li data-target="diferencas">⚖️</li>
       </ul>
+      <button id="changePassBtn">Alterar Senha</button>
       <button id="logoutBtn">Sair</button>
     </div>
 
+    <!-- Conteúdo principal -->
     <div class="main-content">
       <div id="avisosSection" class="avisos">
-        <div style="text-align:center;margin-bottom:8px;"><img src="assets/logo.png" alt="Movebuss" style="max-height:88px;filter:drop-shadow(0 0 6px rgba(192,192,192,0.25));"></div>
+        <div style="text-align:center;margin-bottom:8px;">
+          <img src="assets/logo.png" alt="Movebuss" style="max-height:88px;filter:drop-shadow(0 0 6px rgba(192,192,192,0.25));">
+        </div>
         <h2>Avisos Recebedoria (<span id="dataVigente"></span>)</h2>
         <div id="avisosControls" style="text-align:right;margin-bottom:8px;"></div>
         <ul id="avisosList"></ul>
@@ -35,7 +44,3 @@
       <div class="iframe-container" id="iframeContainer">
         <iframe id="mainFrame" src=""></iframe>
       </div>
-    </div>
-  </div>
-</body>
-</html>

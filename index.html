@@ -6,32 +6,27 @@
   <title>Portal Unificado v2</title>
   <link rel="stylesheet" href="style.css">
   <script type="module" src="firebaseConfig.js"></script>
+  <script type="module" src="script.js"></script>
   <script type="module" src="avisos.js"></script>
 </head>
 <body>
   <div class="app">
-    <div id="sidebar" class="sidebar">
+    <div class="topbar" style="display:flex;align-items:center;justify-content:flex-end;padding:8px 16px"></div>
+    <div id="sidebar" class="sidebar hidden">
       <div class="toggle">☰</div>
       <ul>
         <li data-target="home">🏠 Home</li>
-        <li data-target="abastecimento">💵 Abastecimento</li>
+        <li data-target="abastecimento">⛽ Abastecimento</li>
         <li data-target="emprestimo">💳 Empréstimo</li>
         <li data-target="relatorios">📊 Relatórios</li>
-        <li data-target="diferencas">📉 Diferenças</li>
+        <li data-target="diferencas">⚖️ Diferenças</li>
       </ul>
-      <button id="btnChangePass">Alterar Senha</button>
       <button id="logoutBtn">Sair</button>
     </div>
 
     <div class="main-content">
-      <div class="topbar">
-        <div id="userBadge" class="badge">Usuário • 0000</div>
-      </div>
-      
       <div id="avisosSection" class="avisos">
-        <div style="text-align:center;margin-bottom:8px;">
-          <img src="assets/logo.png" alt="Movebuss" style="max-height:88px;filter:drop-shadow(0 0 6px rgba(192,192,192,0.25));">
-        </div>
+        <div style="text-align:center;margin-bottom:8px;"><img src="assets/logo.png" alt="Movebuss" style="max-height:88px;filter:drop-shadow(0 0 6px rgba(192,192,192,0.25));"></div>
         <h2>Avisos Recebedoria (<span id="dataVigente"></span>)</h2>
         <div id="avisosControls" style="text-align:right;margin-bottom:8px;"></div>
         <ul id="avisosList"></ul>
@@ -42,43 +37,5 @@
       </div>
     </div>
   </div>
-
-  <script type="module">
-    import { auth } from './firebaseConfig.js';
-
-    // Atualiza badge do usuário na topbar
-    auth.onAuthStateChanged(user => {
-      const badge = document.getElementById('userBadge');
-      if(user){
-        const mat = user.email ? user.email.split('@')[0] : '???';
-        badge.textContent = `${mat} • ${mat}`;
-      } else {
-        badge.textContent = 'Usuário • 0000';
-      }
-    });
-
-    // Atalhos da sidebar
-    const sidebarItems = document.querySelectorAll('.sidebar li[data-target]');
-    sidebarItems.forEach(li => {
-      li.addEventListener('click', () => {
-        const target = li.getAttribute('data-target');
-        const iframe = document.getElementById('mainFrame');
-        if(iframe) iframe.src = `${target}.html`;
-      });
-    });
-
-    // Botão alterar senha
-    const btnChangePass = document.getElementById('btnChangePass');
-    btnChangePass?.addEventListener('click', async () => {
-      const nova = prompt('Digite a nova senha:');
-      if(!nova) return;
-      try{
-        await auth.currentUser.updatePassword(nova);
-        alert('Senha alterada com sucesso.');
-      } catch(e){
-        alert('Erro ao alterar senha: ' + (e?.message || e));
-      }
-    });
-  </script>
 </body>
 </html>

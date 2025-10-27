@@ -7,11 +7,12 @@
   --metal: #c0c0c0;
 }
 
-* { box-sizing:border-box; font-family:Inter,system-ui,Arial,sans-serif }
-html, body { height:100%; margin:0; background:var(--bg); color:var(--text); overflow:hidden }
+/* Reset */
+* { box-sizing:border-box; font-family:Inter,system-ui,Arial,sans-serif; }
+html,body { height:100%; margin:0; background:var(--bg); color:var(--text); overflow:hidden; }
 
-/* Layout */
-.app { display:flex; height:100vh }
+/* Layout principal */
+.app { display:flex; height:100vh; }
 
 /* Sidebar */
 .sidebar {
@@ -25,8 +26,7 @@ html, body { height:100%; margin:0; background:var(--bg); color:var(--text); ove
   padding-top:12px;
   position:relative;
 }
-
-.sidebar:hover { width:220px }
+.sidebar:hover { width:220px; }
 
 .sidebar .toggle {
   background:transparent;
@@ -78,11 +78,11 @@ html, body { height:100%; margin:0; background:var(--bg); color:var(--text); ove
   flex-direction:column;
   gap:8px;
   padding:8px 10px;
-  margin-top:auto;
+  margin-top:auto; /* fixa na parte inferior */
 }
 
 .sidebar-footer button {
-  display:none;
+  display:none; /* aparecem apenas quando a barra é expandida */
   border:none;
   border-radius:8px;
   padding:8px 12px;
@@ -94,69 +94,109 @@ html, body { height:100%; margin:0; background:var(--bg); color:var(--text); ove
 #changePassBtn { background-color:#4da6ff; color:#fff; }
 #logoutBtn { background-color:#ff4d4d; color:#fff; }
 
-.sidebar:hover .sidebar-footer button { display:block }
+.sidebar:hover .sidebar-footer button { display:block; }
 
 /* Main content */
-.main-content { flex:1; display:flex; flex-direction:column; padding:16px; gap:12px; overflow:hidden }
-.topbar { height:56px; display:flex; align-items:center; justify-content:flex-end; gap:10px }
-
-/* iframe area large */
-.iframe-container { flex:1; border-radius:8px; overflow:hidden; border:1px solid rgba(255,255,255,0.03); display:none }
-.iframe-container.full { display:block }
-.iframe-container iframe { width:100%; height:100vh; border:0; background:transparent }
-
-/* Avisos Table */
-#addAvisoBtn {
-  background-color: #4da6ff;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  padding: 8px 12px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: all .2s ease;
+.main-content {
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  padding:16px;
+  gap:12px;
+  overflow:hidden;
 }
-#addAvisoBtn:hover { background-color: #3399ff; }
 
+.topbar {
+  height:56px;
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:10px;
+}
+
+/* iframe */
+.iframe-container {
+  flex:1;
+  border-radius:8px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,0.03);
+  display:none;
+}
+.iframe-container.full { display:block; }
+.iframe-container iframe { width:100%; height:100vh; border:0; background:transparent; }
+
+/* Tabela de avisos */
 #avisosTable {
-  width: 100%;
+  width:100%;
   border-collapse: collapse;
-  background: rgba(0,0,0,0.35);
+  margin-top: 12px;
+  background: rgba(20,20,20,0.7);
   border-radius: 8px;
   overflow: hidden;
 }
 
 #avisosTable th, #avisosTable td {
-  padding: 12px;
+  padding: 8px 12px;
   text-align: left;
-  border-bottom: 1px solid rgba(255,255,255,0.08);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
 }
 
 #avisosTable th {
-  background-color: rgba(255,255,255,0.05);
-  color: var(--metal);
+  background: rgba(50,50,50,0.8);
 }
 
-#avisosTable td {
-  color: var(--text);
+#avisosTable tbody tr.riscado td {
+  text-decoration: line-through;
+  opacity: 0.6;
 }
 
-/* Checkbox riscado */
-.aviso-riscado td { text-decoration: line-through; opacity: 0.7; }
+#avisosTable tbody tr:hover {
+  background: rgba(255,255,255,0.05);
+}
 
-/* Botão excluir com lixeira */
-.deleteAvisoBtn {
+#avisosTable input[type="checkbox"] {
+  width:16px;
+  height:16px;
+}
+
+/* Botão de admin */
+.adminBtn {
+  background-color: #4da6ff;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 10px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.adminBtn:hover {
+  background-color: #3399ff;
+}
+
+/* Botão de deletar aviso */
+.delBtn {
   background-color: #ff4d4d;
   color: #fff;
   border: none;
   border-radius: 6px;
   padding: 4px 6px;
   cursor: pointer;
-  font-size: 12px;
-  display: flex;
-  align-items: center;
-  gap: 4px;
+  font-weight: bold;
 }
-.deleteAvisoBtn:hover { background-color: #e60000; }
 
-@media(max-width:900px){ .sidebar{display:none} }
+.delBtn:hover {
+  background-color: #e60000;
+}
+
+/* Timestamps */
+.timestamp {
+  font-size: 0.75rem;
+  color: #aaa;
+  margin-top: 2px;
+}
+
+/* Responsive */
+@media(max-width:900px){
+  .sidebar { display:none; }
+}

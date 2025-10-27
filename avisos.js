@@ -21,10 +21,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function renderItem(id, data, currentUserIsAdmin){
-        const li = document.createElement('li');
-        li.className = 'aviso' + (data.riscado ? ' riscado' : '');
-        
+        const tr = document.createElement('tr');
+        if(data.riscado) tr.classList.add('riscado');
+
         // checkbox
+        const cbTd = document.createElement('td');
         const cb = document.createElement('input');
         cb.type = 'checkbox';
         cb.checked = !!data.riscado;
@@ -34,53 +35,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 await updateDoc(doc(db,'avisos',id), { riscado: cb.checked, baixaTimestamp: serverTimestamp() });
             }catch(e){ console.error('update riscado',e); alert('Erro ao salvar'); }
         });
-        li.appendChild(cb);
+        cbTd.appendChild(cb);
+        tr.appendChild(cbTd);
 
-        // content
-        const content = document.createElement('div');
-        content.className = 'content';
+        // data
+        const dataTd = document.createElement('td');
+        dataTd.textContent = formatTimestamp(data.data);
+        tr.appendChild(dataTd);
 
-        const title = document.createElement('div');
-        title.className = 'title';
-        title.textContent = data.titulo || '';
+        // mensagem
+        const msgTd = document.createElement('td');
+        msgTd.innerHTML = `<strong>${data.titulo}</strong><br>${data.conteudo || ''}`;
+        tr.appendChild(msgTd);
 
-        const body = document.createElement('div');
-        body.className = 'body';
-        body.textContent = data.conteudo || '';
-
-        // timestamps
-        const tsCreated = document.createElement('div');
-        tsCreated.className = 'timestamp';
-        tsCreated.textContent = 'Criado: ' + formatTimestamp(data.data);
-
-        const tsBaixa = document.createElement('div');
-        tsBaixa.className = 'timestamp';
-        tsBaixa.textContent = data.riscado ? 'Baixa: ' + formatTimestamp(data.baixaTimestamp) : '';
-
-        content.appendChild(title);
-        content.appendChild(body);
-        content.appendChild(tsCreated);
-        content.appendChild(tsBaixa);
-
+        // ações
+        const actionsTd = document.createElement('td');
         if(currentUserIsAdmin){
-            title.setAttribute('contenteditable','true');
-            body.setAttribute('contenteditable','true');
-
-            const saveFn = async ()=>{
-                try{
-                    await updateDoc(doc(db,'avisos',id), { titulo: title.textContent, conteudo: body.textContent, data: serverTimestamp() });
-                }catch(e){ console.error('save edit',e); alert('Erro ao salvar'); }
-            };
-            title.addEventListener('blur', saveFn);
-            body.addEventListener('blur', saveFn);
-        }
-
-        li.appendChild(content);
-
-        if(currentUserIsAdmin){
-            const actions = document.createElement('div');
-            actions.className = 'actions';
-
             const del = document.createElement('button');
             del.className = 'delBtn';
             del.innerHTML = '🗑️';
@@ -90,12 +60,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 try{ await deleteDoc(doc(db,'avisos',id)); }
                 catch(e){ console.error(e); alert('Erro ao remover'); }
             });
-
-            actions.appendChild(del);
-            li.appendChild(actions);
+            actionsTd.appendChild(del);
         }
+        tr.appendChild(actionsTd);
 
-        return li;
+        return tr;
     }
 
     onAuthStateChanged(auth, async (user)=>{
@@ -103,17 +72,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const isAdmin = isAdminByEmail(user.email);
 
-        // adicionar botão "Adicionar aviso" se for admin
+        // botão adicionar aviso
         controls.innerHTML = '';
         if(isAdmin){
             const addBtn = document.createElement('button');
             addBtn.className = 'adminBtn';
             addBtn.textContent = 'Adicionar aviso';
             addBtn.addEventListener('click', async ()=>{
-                const t = prompt('Título:');
-                if(t===null) return;
-                const m = prompt('Mensagem:');
-                if(m===null) return;
+                const t = prompt('Título:'); if(t===null) return;
+                const m = prompt('Mensagem:'); if(m===null) return;
                 try{
                     await addDoc(collection(db,'avisos'), { titulo: t, conteudo: m, data: serverTimestamp(), riscado: false, autor: user.email });
                 }catch(e){ console.error('add aviso',e); alert('Erro ao criar aviso'); }

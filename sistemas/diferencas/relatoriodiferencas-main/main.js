@@ -60,7 +60,7 @@ auth.onAuthStateChanged(async (user) => {
     const userDoc = await db.collection("usuarios").doc(user.uid).get();
     const dados = userDoc.data();
 
-    const isAdmin = ["6266", "4144", "70029"].includes(dados.matricula);
+    const isAdmin = ["6266", "4144", "70029", "6414"].includes(dados.matricula);
 
     if (isAdmin) {
       document.getElementById("btnResumoRecebedor").style.display = "inline-block";

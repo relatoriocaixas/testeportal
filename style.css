@@ -19,15 +19,21 @@ html,body{height:100%;margin:0;background:var(--bg);color:var(--text);overflow:h
   background:rgba(10,10,10,0.6);
   display:flex;
   flex-direction:column;
-  justify-content:flex-start; /* mudar de space-between para flex-start */
   transition:width .28s ease;
   overflow:hidden;
   padding-top:12px;
-  position:relative;
 }
 
 .sidebar:hover{width:220px}
 
+/* Container superior */
+.sidebar-top {
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+/* Toggle e atalhos */
 .sidebar .toggle{
   background:transparent;
   border:none;
@@ -67,7 +73,7 @@ html,body{height:100%;margin:0;background:var(--bg);color:var(--text);overflow:h
 .sidebar-badge{
   padding:6px 10px;
   border-radius:8px;
-  margin-bottom:16px; /* um pouco mais de espaço antes dos atalhos */
+  margin-bottom:16px;
   text-align:center;
   transition:all .3s ease;
 }
@@ -78,11 +84,11 @@ html,body{height:100%;margin:0;background:var(--bg);color:var(--text);overflow:h
   flex-direction:column;
   gap:8px;
   padding:8px 10px;
-  margin-top:auto; /* força o footer a ficar na parte de baixo */
+  margin-top:auto; /* força o footer para baixo */
 }
 
-.sidebar-footer button {
-  display:none; /* aparecem apenas quando a barra é expandida */
+.sidebar-footer button{
+  display:none; /* aparecem apenas ao expandir */
   border:none;
   border-radius:8px;
   padding:8px 12px;
@@ -91,11 +97,9 @@ html,body{height:100%;margin:0;background:var(--bg);color:var(--text);overflow:h
   transition:all .2s ease;
 }
 
-/* cores específicas para cada botão */
 #changePassBtn { background-color:#4da6ff; color:#fff; }
 #logoutBtn { background-color:#ff4d4d; color:#fff; }
 
-/* exibe os botões apenas quando a barra estiver expandida */
 .sidebar:hover .sidebar-footer button {
   display:block;
 }

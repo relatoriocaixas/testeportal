@@ -12,15 +12,20 @@
 <body>
   <div class="app">
     <div id="sidebar" class="sidebar">
-      <div class="toggle">☰</div>
-      <div class="sidebar-badge" id="sidebarBadge">MATRICULA</div>
-      <ul>
-        <li data-target="home">🏠 <span class="label">Home</span></li>
-        <li data-target="abastecimento">💵 <span class="label">Abastecimento</span></li>
-        <li data-target="emprestimo">💳 <span class="label">Empréstimo</span></li>
-        <li data-target="relatorios">📊 <span class="label">Relatórios</span></li>
-        <li data-target="diferencas">⚖️ <span class="label">Diferenças</span></li>
-      </ul>
+      <!-- Parte superior -->
+      <div class="sidebar-top">
+        <div class="toggle">☰</div>
+        <div class="sidebar-badge" id="sidebarBadge">MATRICULA</div>
+        <ul>
+          <li data-target="home">🏠 <span class="label">Home</span></li>
+          <li data-target="abastecimento">💵 <span class="label">Abastecimento</span></li>
+          <li data-target="emprestimo">💳 <span class="label">Empréstimo</span></li>
+          <li data-target="relatorios">📊 <span class="label">Relatórios</span></li>
+          <li data-target="diferencas">⚖️ <span class="label">Diferenças</span></li>
+        </ul>
+      </div>
+
+      <!-- Parte inferior -->
       <div class="sidebar-footer">
         <button id="changePassBtn">Alterar Senha</button>
         <button id="logoutBtn">Sair</button>

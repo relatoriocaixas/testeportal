@@ -11,22 +11,30 @@
 </head>
 <body>
   <div class="app">
-    <div class="topbar" style="display:flex;align-items:center;justify-content:flex-end;padding:8px 16px"></div>
+    <!-- Sidebar fixa à esquerda -->
     <div id="sidebar" class="sidebar hidden">
+      <div class="user-info">
+        <div id="userBadge" class="badge">Nome • Matrícula</div>
+      </div>
       <div class="toggle">☰</div>
       <ul>
         <li data-target="home">🏠 Home</li>
-        <li data-target="abastecimento">⛽ Abastecimento</li>
+        <li data-target="abastecimento">💵 Abastecimento</li>
         <li data-target="emprestimo">💳 Empréstimo</li>
         <li data-target="relatorios">📊 Relatórios</li>
-        <li data-target="diferencas">⚖️ Diferenças</li>
+        <li data-target="diferencas">📉 Diferenças</li>
       </ul>
       <button id="logoutBtn">Sair</button>
     </div>
 
+    <!-- Conteúdo principal -->
     <div class="main-content">
+      <div class="topbar" style="display:flex;align-items:center;justify-content:flex-end;padding:8px 16px"></div>
+
       <div id="avisosSection" class="avisos">
-        <div style="text-align:center;margin-bottom:8px;"><img src="assets/logo.png" alt="Movebuss" style="max-height:88px;filter:drop-shadow(0 0 6px rgba(192,192,192,0.25));"></div>
+        <div style="text-align:center;margin-bottom:8px;">
+          <img src="assets/logo.png" alt="Movebuss" style="max-height:88px;filter:drop-shadow(0 0 6px rgba(192,192,192,0.25));">
+        </div>
         <h2>Avisos Recebedoria (<span id="dataVigente"></span>)</h2>
         <div id="avisosControls" style="text-align:right;margin-bottom:8px;"></div>
         <ul id="avisosList"></ul>
@@ -37,5 +45,19 @@
       </div>
     </div>
   </div>
+
+  <script>
+    const sidebar = document.getElementById('sidebar');
+    const toggleBtn = sidebar.querySelector('.toggle');
+
+    // Expande a sidebar ao clicar no toggle
+    toggleBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('expanded');
+    });
+
+    // Badge de usuário (Firebase pode preencher dinamicamente)
+    const userBadge = document.getElementById('userBadge');
+    userBadge.textContent = "Lucas Recebedoria • 6266"; // exemplo
+  </script>
 </body>
 </html>

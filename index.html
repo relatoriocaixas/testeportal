@@ -6,17 +6,16 @@
   <title>Portal Unificado v2</title>
   <link rel="stylesheet" href="style.css">
   <script type="module" src="firebaseConfig.js"></script>
-  <script type="module" src="script.js"></script>
   <script type="module" src="avisos.js"></script>
 </head>
 <body>
   <div class="app">
-    <!-- Sidebar fixa à esquerda -->
-    <div id="sidebar" class="sidebar hidden">
-      <div class="user-info">
-        <div id="userBadge" class="badge">Nome • Matrícula</div>
-      </div>
+    <div id="sidebar" class="sidebar">
       <div class="toggle">☰</div>
+      <div class="user-info">
+        <div id="userName">Usuário</div>
+        <div id="userMat">0000</div>
+      </div>
       <ul>
         <li data-target="home">🏠 Home</li>
         <li data-target="abastecimento">💵 Abastecimento</li>
@@ -27,10 +26,9 @@
       <button id="logoutBtn">Sair</button>
     </div>
 
-    <!-- Conteúdo principal -->
     <div class="main-content">
       <div class="topbar" style="display:flex;align-items:center;justify-content:flex-end;padding:8px 16px"></div>
-
+      
       <div id="avisosSection" class="avisos">
         <div style="text-align:center;margin-bottom:8px;">
           <img src="assets/logo.png" alt="Movebuss" style="max-height:88px;filter:drop-shadow(0 0 6px rgba(192,192,192,0.25));">
@@ -46,18 +44,31 @@
     </div>
   </div>
 
-  <script>
+  <script type="module">
     const sidebar = document.getElementById('sidebar');
-    const toggleBtn = sidebar.querySelector('.toggle');
+    const toggle = sidebar.querySelector('.toggle');
+    const mainContent = document.querySelector('.main-content');
 
-    // Expande a sidebar ao clicar no toggle
-    toggleBtn.addEventListener('click', () => {
-      sidebar.classList.toggle('expanded');
+    toggle.addEventListener('click', () => {
+      sidebar.classList.toggle('open');
+      if(sidebar.classList.contains('open')) {
+        mainContent.style.marginLeft = '220px';
+      } else {
+        mainContent.style.marginLeft = '70px';
+      }
     });
 
-    // Badge de usuário (Firebase pode preencher dinamicamente)
-    const userBadge = document.getElementById('userBadge');
-    userBadge.textContent = "Lucas Recebedoria • 6266"; // exemplo
+    // Atualiza usuário na sidebar
+    import { auth } from './firebaseConfig.js';
+    auth.onAuthStateChanged(user => {
+      const userName = document.getElementById('userName');
+      const userMat = document.getElementById('userMat');
+      if(user) {
+        const mat = user.email ? user.email.split('@')[0] : '???';
+        userName.textContent = mat; // Aqui você pode usar currentUserDoc.nome se carregar do Firestore
+        userMat.textContent = mat;
+      }
+    });
   </script>
 </body>
 </html>

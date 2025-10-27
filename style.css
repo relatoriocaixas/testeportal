@@ -6,141 +6,155 @@
   --muted: #cfcfcf;
   --metal: #c0c0c0;
 }
+
 *{box-sizing:border-box;font-family:Inter,system-ui,Arial,sans-serif}
 html,body{height:100%;margin:0;background:var(--bg);color:var(--text);overflow:hidden}
 
-/* Login styles */
-.login-body{display:flex;align-items:center;justify-content:center;height:100vh}
-.login-box{background:rgba(255,255,255,0.03);padding:28px;border-radius:10px;width:360px;text-align:center;border:1px solid rgba(255,255,255,0.04)}
-.login-box .logo{max-height:72px;margin-bottom:12px}
-.login-box input{width:100%;padding:10px;margin:8px 0;border-radius:8px;background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.04);color:var(--text)}
-.login-box button{padding:10px 14px;border-radius:8px;border:none;background:linear-gradient(90deg,#d0d0d0,#a8a8a8);color:#000;cursor:pointer}
-
 /* Layout */
-.app{display:flex;height:100vh;overflow:hidden}
+.app{display:flex;height:100vh}
 
-/* Sidebar fixa e expansível */
+/* Sidebar */
 .sidebar{
-  position: fixed;
-  left: 0;
-  top: 0;
-  height: 100vh;
-  width: 70px;
-  background: rgba(10,10,10,0.6);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 12px;
-  overflow: hidden;
-  transition: width 0.28s ease;
-  z-index: 1000;
+  width:70px;
+  background:rgba(10,10,10,0.6);
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding-top:12px;
+  transition: width 0.3s ease;
+  position:fixed;
+  left:0; top:0; bottom:0;
+  z-index:100;
 }
 
-.sidebar.expanded,
-.sidebar:hover{width:220px}
+.sidebar.open{width:220px;}
 
-/* Informações do usuário dentro da barra */
-.sidebar .user-info{
-  width: 100%;
-  text-align: center;
-  margin-bottom: 12px;
-}
-
-.sidebar .user-info .badge{
-  display: block;
-  background: rgba(255,255,255,0.03);
-  padding: 6px 10px;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* Toggle */
 .sidebar .toggle{
-  background: transparent;
-  border: none;
-  color: var(--metal);
-  font-size: 20px;
-  margin-bottom: 12px;
-  cursor: pointer;
+  background:transparent;
+  border:none;
+  color:var(--metal);
+  font-size:20px;
+  margin-bottom:12px;
+  cursor:pointer;
 }
 
-/* Lista de itens */
+.sidebar .user-info{
+  text-align:center;
+  margin-bottom:12px;
+  opacity:0;
+  transition: opacity 0.3s ease;
+}
+
+.sidebar.open .user-info{
+  opacity:1;
+}
+
+.sidebar .user-info #userName,
+.sidebar .user-info #userMat{
+  font-size:12px;
+  color:var(--text);
+  white-space:nowrap;
+}
+
 .sidebar ul{
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  width: 100%;
+  list-style:none;
+  padding:0;
+  margin:0;
+  width:100%;
 }
 
 .sidebar li{
-  padding: 12px 10px;
-  width: 100%;
-  cursor: pointer;
-  color: var(--text);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  transition: background 0.2s, color 0.2s;
+  padding:12px 10px;
+  width:100%;
+  cursor:pointer;
+  color:var(--text);
+  display:flex;
+  align-items:center;
+  gap:8px;
 }
 
 .sidebar li:hover{
-  background: rgba(255,255,255,0.03);
-  color: var(--metal);
+  background:rgba(255,255,255,0.03);
+  color:var(--metal);
 }
 
-/* Botão logout */
 .sidebar button{
-  margin-top: auto;
-  margin-bottom: 16px;
-  width: calc(100% - 20px);
-  padding: 8px;
-  border-radius: 8px;
-  border: none;
-  background: linear-gradient(90deg,#d0d0d0,#a8a8a8);
-  color: #000;
-  cursor: pointer;
+  margin-top:auto;
+  margin-bottom:16px;
+  padding:8px 10px;
+  border:none;
+  border-radius:6px;
+  background:rgba(255,0,0,0.6);
+  color:#fff;
+  cursor:pointer;
 }
 
-/* Main content shift para não ficar atrás da sidebar */
+/* Main content */
 .main-content{
   flex:1;
+  margin-left:70px;
+  transition: margin-left 0.3s ease;
   display:flex;
   flex-direction:column;
   padding:16px;
   gap:12px;
-  margin-left:70px;
-  transition: margin-left 0.28s ease;
-}
-
-.sidebar.expanded ~ .main-content{
-  margin-left:220px;
 }
 
 /* Topbar */
-.topbar{height:56px;display:flex;align-items:center;justify-content:flex-end;gap:10px}
-.badge{background:rgba(255,255,255,0.03);padding:6px 10px;border-radius:8px}
-.controls button{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:6px 10px;border-radius:8px;color:var(--text);cursor:pointer}
+.topbar{
+  height:56px;
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:10px;
+}
 
 /* Avisos */
-.avisos{background:rgba(255,255,255,0.02);padding:12px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);max-height:calc(100vh - 140px);overflow:auto}
+.avisos{
+  background:rgba(255,255,255,0.02);
+  padding:12px;
+  border-radius:8px;
+  border:1px solid rgba(255,255,255,0.03);
+  max-height:calc(100vh - 140px);
+  overflow:auto;
+}
+
 .avisos ul{list-style:none;padding:0;margin:0}
-.aviso{padding:10px;border-radius:6px;margin-bottom:8px;background:rgba(0,0,0,0.35);border:1px solid rgba(255,255,255,0.02);display:flex;align-items:flex-start;gap:8px}
+
+.aviso{
+  padding:10px;
+  border-radius:6px;
+  margin-bottom:8px;
+  background:rgba(0,0,0,0.35);
+  border:1px solid rgba(255,255,255,0.02);
+  display:flex;
+  align-items:flex-start;
+  gap:8px;
+}
+
 .aviso .meta{font-size:12px;color:var(--muted);margin-bottom:6px}
 .aviso .content{flex:1}
 .aviso .content[contenteditable="true"]{outline:2px dashed rgba(192,192,192,0.12);padding:6px;border-radius:6px}
 .aviso.riscado .content{text-decoration:line-through;opacity:0.7}
 
-/* iframe */
-.iframe-container{flex:1;border-radius:8px;overflow:hidden;border:1px solid rgba(255,255,255,0.03);display:none}
+/* Iframe */
+.iframe-container{
+  flex:1;
+  border-radius:8px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,0.03);
+  display:none;
+}
 .iframe-container.full{display:block}
-.iframe-container iframe{width:100%;height:100vh;border:0;background:transparent}
+.iframe-container iframe{
+  width:100%;
+  height:100vh;
+  border:0;
+  background:transparent;
+}
 
 /* Responsive */
 @media(max-width:900px){
   .sidebar{display:none}
-  .sidebar.hidden{display:none}
-  .main-content{margin-left:0}
 }

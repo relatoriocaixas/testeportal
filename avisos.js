@@ -13,8 +13,11 @@ function isAdminByEmail(email){
 }
 
 function renderItem(id, data, currentUserIsAdmin){
-    const li = document.createElement('li');
-    li.className = 'aviso' + (data.riscado ? ' riscado' : '');
+    const tr = document.createElement('tr');
+    if(data.riscado) tr.classList.add('aviso-riscado');
+
+    // Checkbox
+    const tdCheckbox = document.createElement('td');
     const cb = document.createElement('input');
     cb.type = 'checkbox';
     cb.checked = !!data.riscado;
@@ -24,51 +27,62 @@ function renderItem(id, data, currentUserIsAdmin){
             await updateDoc(doc(db,'avisos',id), { riscado: cb.checked });
         }catch(e){ console.error('update riscado',e); alert('Erro ao salvar'); }
     });
-    li.appendChild(cb);
-    const content = document.createElement('div');
-    content.className = 'content';
-    const title = document.createElement('div');
-    title.className = 'title';
-    title.textContent = data.titulo || '';
-    const body = document.createElement('div');
-    body.className = 'body';
-    body.textContent = data.conteudo || '';
+    tdCheckbox.appendChild(cb);
+    tr.appendChild(tdCheckbox);
+
+    // Data
+    const tdData = document.createElement('td');
+    const dataObj = data.data?.toDate ? data.data.toDate() : new Date();
+    tdData.textContent = `${String(dataObj.getDate()).padStart(2,'0')}/${String(dataObj.getMonth()+1).padStart(2,'0')}/${dataObj.getFullYear()}`;
+    tr.appendChild(tdData);
+
+    // Mensagem
+    const tdMsg = document.createElement('td');
+    tdMsg.textContent = `${data.titulo || ''} - ${data.conteudo || ''}`;
     if(currentUserIsAdmin){
-        title.setAttribute('contenteditable','true');
-        body.setAttribute('contenteditable','true');
-        const saveFn = async ()=>{
+        tdMsg.setAttribute('contenteditable','true');
+        tdMsg.addEventListener('blur', async ()=>{
             try{
-                await updateDoc(doc(db,'avisos',id), { titulo: title.textContent, conteudo: body.textContent, data: serverTimestamp() });
+                await updateDoc(doc(db,'avisos',id), { titulo: data.titulo, conteudo: tdMsg.textContent, data: serverTimestamp() });
             }catch(e){ console.error('save edit',e); alert('Erro ao salvar'); }
-        };
-        title.addEventListener('blur', saveFn);
-        body.addEventListener('blur', saveFn);
+        });
     }
-    content.appendChild(title);
-    content.appendChild(body);
-    li.appendChild(content);
+    tr.appendChild(tdMsg);
+
+    // Ações (Excluir)
+    const tdActions = document.createElement('td');
     if(currentUserIsAdmin){
-        const actions = document.createElement('div');
-        actions.style.marginLeft='8px';
         const del = document.createElement('button');
-        del.textContent = 'Remover';
+        del.className = 'deleteAvisoBtn';
+        del.innerHTML = '🗑️';
         del.addEventListener('click', async ()=>{
             if(!confirm('Remover aviso?')) return;
             try{ await deleteDoc(doc(db,'avisos',id)); }catch(e){ console.error(e); alert('Erro ao remover'); }
         });
-        actions.appendChild(del);
-        li.appendChild(actions);
+        tdActions.appendChild(del);
     }
-    return li;
+    tr.appendChild(tdActions);
+
+    return tr;
 }
 
 onAuthStateChanged(auth, async (user)=>{
     if(!user) return;
     const isAdmin = isAdminByEmail(user.email);
+
+    // Botão adicionar aviso
     controls.innerHTML = '';
     if(isAdmin){
         const addBtn = document.createElement('button');
-        addBtn.textContent = 'Adicionar aviso';
+        addBtn.id = 'addAvisoBtn';
+        addBtn.textContent = 'Adicionar Aviso';
+        addBtn.style.backgroundColor = '#4da6ff';
+        addBtn.style.color = '#fff';
+        addBtn.style.border = 'none';
+        addBtn.style.borderRadius = '8px';
+        addBtn.style.padding = '8px 12px';
+        addBtn.style.cursor = 'pointer';
+        addBtn.style.fontWeight = 'bold';
         addBtn.addEventListener('click', async ()=>{
             const t = prompt('Título:');
             if(t===null) return;
@@ -80,6 +94,8 @@ onAuthStateChanged(auth, async (user)=>{
         });
         controls.appendChild(addBtn);
     }
+
+    // Listen avisos
     const q = query(collection(db,'avisos'), orderBy('data','desc'));
     onSnapshot(q, (snap)=>{
         lista.innerHTML = '';

@@ -7,34 +7,28 @@
   --metal: #c0c0c0;
 }
 
-*{box-sizing:border-box;font-family:Inter,system-ui,Arial,sans-serif}
-html,body{height:100%;margin:0;background:var(--bg);color:var(--text);overflow:hidden}
+* { box-sizing:border-box; font-family:Inter,system-ui,Arial,sans-serif }
+html, body { height:100%; margin:0; background:var(--bg); color:var(--text); overflow:hidden }
 
 /* Layout */
-.app{display:flex;height:100vh}
+.app { display:flex; height:100vh }
 
 /* Sidebar */
-.sidebar{
+.sidebar {
   width:70px;
   background:rgba(10,10,10,0.6);
   display:flex;
   flex-direction:column;
+  justify-content:flex-start;
   transition:width .28s ease;
   overflow:hidden;
   padding-top:12px;
+  position:relative;
 }
 
-.sidebar:hover{width:220px}
+.sidebar:hover { width:220px }
 
-/* Container superior */
-.sidebar-top {
-  display:flex;
-  flex-direction:column;
-  gap:12px;
-}
-
-/* Toggle e atalhos */
-.sidebar .toggle{
+.sidebar .toggle {
   background:transparent;
   border:none;
   color:var(--metal);
@@ -43,14 +37,14 @@ html,body{height:100%;margin:0;background:var(--bg);color:var(--text);overflow:h
   cursor:pointer;
 }
 
-.sidebar ul{
+.sidebar ul {
   list-style:none;
   padding:0;
   margin:0;
   width:100%;
 }
 
-.sidebar li{
+.sidebar li {
   padding:12px 10px;
   width:100%;
   cursor:pointer;
@@ -61,16 +55,16 @@ html,body{height:100%;margin:0;background:var(--bg);color:var(--text);overflow:h
   transition:all .2s ease;
 }
 
-.sidebar li .label{display:none;}
-.sidebar:hover li .label{display:inline;}
+.sidebar li .label { display:none; }
+.sidebar:hover li .label { display:inline; }
 
-.sidebar li:hover{
+.sidebar li:hover {
   background:rgba(255,255,255,0.03);
   color:var(--metal);
 }
 
 /* Badge */
-.sidebar-badge{
+.sidebar-badge {
   padding:6px 10px;
   border-radius:8px;
   margin-bottom:16px;
@@ -84,11 +78,11 @@ html,body{height:100%;margin:0;background:var(--bg);color:var(--text);overflow:h
   flex-direction:column;
   gap:8px;
   padding:8px 10px;
-  margin-top:auto; /* força o footer para baixo */
+  margin-top:auto;
 }
 
-.sidebar-footer button{
-  display:none; /* aparecem apenas ao expandir */
+.sidebar-footer button {
+  display:none;
   border:none;
   border-radius:8px;
   padding:8px 12px;
@@ -100,20 +94,69 @@ html,body{height:100%;margin:0;background:var(--bg);color:var(--text);overflow:h
 #changePassBtn { background-color:#4da6ff; color:#fff; }
 #logoutBtn { background-color:#ff4d4d; color:#fff; }
 
-.sidebar:hover .sidebar-footer button {
-  display:block;
-}
+.sidebar:hover .sidebar-footer button { display:block }
 
 /* Main content */
-.main-content{flex:1;display:flex;flex-direction:column;padding:16px;gap:12px;overflow:hidden}
-.topbar{height:56px;display:flex;align-items:center;justify-content:flex-end;gap:10px}
+.main-content { flex:1; display:flex; flex-direction:column; padding:16px; gap:12px; overflow:hidden }
+.topbar { height:56px; display:flex; align-items:center; justify-content:flex-end; gap:10px }
 
 /* iframe area large */
-.iframe-container{flex:1;border-radius:8px;overflow:hidden;border:1px solid rgba(255,255,255,0.03);display:none}
-.iframe-container.full{display:block}
-.iframe-container iframe{width:100%;height:100vh;border:0;background:transparent}
+.iframe-container { flex:1; border-radius:8px; overflow:hidden; border:1px solid rgba(255,255,255,0.03); display:none }
+.iframe-container.full { display:block }
+.iframe-container iframe { width:100%; height:100vh; border:0; background:transparent }
 
-/* responsive */
-@media(max-width:900px){
-  .sidebar{display:none}
+/* Avisos Table */
+#addAvisoBtn {
+  background-color: #4da6ff;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all .2s ease;
 }
+#addAvisoBtn:hover { background-color: #3399ff; }
+
+#avisosTable {
+  width: 100%;
+  border-collapse: collapse;
+  background: rgba(0,0,0,0.35);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+#avisosTable th, #avisosTable td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+#avisosTable th {
+  background-color: rgba(255,255,255,0.05);
+  color: var(--metal);
+}
+
+#avisosTable td {
+  color: var(--text);
+}
+
+/* Checkbox riscado */
+.aviso-riscado td { text-decoration: line-through; opacity: 0.7; }
+
+/* Botão excluir com lixeira */
+.deleteAvisoBtn {
+  background-color: #ff4d4d;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 4px 6px;
+  cursor: pointer;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.deleteAvisoBtn:hover { background-color: #e60000; }
+
+@media(max-width:900px){ .sidebar{display:none} }

@@ -11,7 +11,7 @@
 html,body{height:100%;margin:0;background:var(--bg);color:var(--text);overflow:hidden}
 
 /* Layout */
-.app{display:flex;height:100vh}
+.app{display:flex;height:100vh;position:relative}
 
 /* Sidebar */
 .sidebar{
@@ -22,13 +22,17 @@ html,body{height:100%;margin:0;background:var(--bg);color:var(--text);overflow:h
   flex-direction:column;
   align-items:center;
   padding-top:12px;
-  transition: width 0.3s ease;
   position:fixed;
-  left:0; top:0; bottom:0;
+  top:0; bottom:0; left:0;
+  transition: width 0.3s ease;
   z-index:100;
 }
 
-.sidebar.open{width:220px;}
+/* Hover sobre toggle abre a sidebar */
+.sidebar .toggle:hover + ul,
+.sidebar:hover{
+  width:220px;
+}
 
 .sidebar .toggle{
   background:transparent;
@@ -37,24 +41,6 @@ html,body{height:100%;margin:0;background:var(--bg);color:var(--text);overflow:h
   font-size:20px;
   margin-bottom:12px;
   cursor:pointer;
-}
-
-.sidebar .user-info{
-  text-align:center;
-  margin-bottom:12px;
-  opacity:0;
-  transition: opacity 0.3s ease;
-}
-
-.sidebar.open .user-info{
-  opacity:1;
-}
-
-.sidebar .user-info #userName,
-.sidebar .user-info #userMat{
-  font-size:12px;
-  color:var(--text);
-  white-space:nowrap;
 }
 
 .sidebar ul{
@@ -80,14 +66,15 @@ html,body{height:100%;margin:0;background:var(--bg);color:var(--text);overflow:h
 }
 
 .sidebar button{
-  margin-top:auto;
-  margin-bottom:16px;
+  margin-top:4px;
+  margin-bottom:8px;
   padding:8px 10px;
   border:none;
   border-radius:6px;
-  background:rgba(255,0,0,0.6);
+  background:rgba(50,50,50,0.6);
   color:#fff;
   cursor:pointer;
+  width:90%;
 }
 
 /* Main content */
@@ -101,6 +88,11 @@ html,body{height:100%;margin:0;background:var(--bg);color:var(--text);overflow:h
   gap:12px;
 }
 
+/* Move main content quando sidebar expandida */
+.sidebar:hover ~ .main-content{
+  margin-left:220px;
+}
+
 /* Topbar */
 .topbar{
   height:56px;
@@ -108,6 +100,12 @@ html,body{height:100%;margin:0;background:var(--bg);color:var(--text);overflow:h
   align-items:center;
   justify-content:flex-end;
   gap:10px;
+}
+
+.badge{
+  background:rgba(255,255,255,0.03);
+  padding:6px 10px;
+  border-radius:8px;
 }
 
 /* Avisos */

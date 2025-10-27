@@ -12,10 +12,6 @@
   <div class="app">
     <div id="sidebar" class="sidebar">
       <div class="toggle">☰</div>
-      <div class="user-info">
-        <div id="userName">Usuário</div>
-        <div id="userMat">0000</div>
-      </div>
       <ul>
         <li data-target="home">🏠 Home</li>
         <li data-target="abastecimento">💵 Abastecimento</li>
@@ -23,11 +19,14 @@
         <li data-target="relatorios">📊 Relatórios</li>
         <li data-target="diferencas">📉 Diferenças</li>
       </ul>
+      <button id="btnChangePass">Alterar Senha</button>
       <button id="logoutBtn">Sair</button>
     </div>
 
     <div class="main-content">
-      <div class="topbar" style="display:flex;align-items:center;justify-content:flex-end;padding:8px 16px"></div>
+      <div class="topbar">
+        <div id="userBadge" class="badge">Usuário • 0000</div>
+      </div>
       
       <div id="avisosSection" class="avisos">
         <div style="text-align:center;margin-bottom:8px;">
@@ -45,28 +44,39 @@
   </div>
 
   <script type="module">
-    const sidebar = document.getElementById('sidebar');
-    const toggle = sidebar.querySelector('.toggle');
-    const mainContent = document.querySelector('.main-content');
+    import { auth } from './firebaseConfig.js';
 
-    toggle.addEventListener('click', () => {
-      sidebar.classList.toggle('open');
-      if(sidebar.classList.contains('open')) {
-        mainContent.style.marginLeft = '220px';
+    // Atualiza badge do usuário na topbar
+    auth.onAuthStateChanged(user => {
+      const badge = document.getElementById('userBadge');
+      if(user){
+        const mat = user.email ? user.email.split('@')[0] : '???';
+        badge.textContent = `${mat} • ${mat}`;
       } else {
-        mainContent.style.marginLeft = '70px';
+        badge.textContent = 'Usuário • 0000';
       }
     });
 
-    // Atualiza usuário na sidebar
-    import { auth } from './firebaseConfig.js';
-    auth.onAuthStateChanged(user => {
-      const userName = document.getElementById('userName');
-      const userMat = document.getElementById('userMat');
-      if(user) {
-        const mat = user.email ? user.email.split('@')[0] : '???';
-        userName.textContent = mat; // Aqui você pode usar currentUserDoc.nome se carregar do Firestore
-        userMat.textContent = mat;
+    // Atalhos da sidebar
+    const sidebarItems = document.querySelectorAll('.sidebar li[data-target]');
+    sidebarItems.forEach(li => {
+      li.addEventListener('click', () => {
+        const target = li.getAttribute('data-target');
+        const iframe = document.getElementById('mainFrame');
+        if(iframe) iframe.src = `${target}.html`;
+      });
+    });
+
+    // Botão alterar senha
+    const btnChangePass = document.getElementById('btnChangePass');
+    btnChangePass?.addEventListener('click', async () => {
+      const nova = prompt('Digite a nova senha:');
+      if(!nova) return;
+      try{
+        await auth.currentUser.updatePassword(nova);
+        alert('Senha alterada com sucesso.');
+      } catch(e){
+        alert('Erro ao alterar senha: ' + (e?.message || e));
       }
     });
   </script>

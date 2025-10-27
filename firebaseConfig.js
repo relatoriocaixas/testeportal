@@ -1,32 +1,17 @@
-// Firebase init (v10 modular)
+// firebaseConfig.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
 import { 
-  getAuth, 
-  setPersistence, 
-  browserLocalPersistence, 
-  onAuthStateChanged, 
-  createUserWithEmailAndPassword, 
-  signInWithEmailAndPassword, 
-  signOut, 
-  updatePassword 
+  getAuth, setPersistence, browserLocalPersistence, 
+  onAuthStateChanged, createUserWithEmailAndPassword, 
+  signInWithEmailAndPassword, signOut, updatePassword 
 } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
 import { 
-  getFirestore, 
-  doc, 
-  setDoc, 
-  getDoc, 
-  updateDoc, 
-  addDoc, 
-  getDocs, 
-  collection, 
-  query, 
-  where, 
-  serverTimestamp, 
-  orderBy 
+  getFirestore, doc, setDoc, getDoc, updateDoc, addDoc, 
+  getDocs, collection, query, where, serverTimestamp, orderBy 
 } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
 
-// Config do Firebase unificado
-export const firebaseConfig = {
+// Configuração do Firebase
+export const firebaseConfig = { 
   apiKey: "AIzaSyBWmq02P8pGbl2NmppEAIKtF9KtQ7AzTFQ",
   authDomain: "unificado-441cd.firebaseapp.com",
   projectId: "unificado-441cd",
@@ -36,30 +21,17 @@ export const firebaseConfig = {
   measurementId: "G-6GQX395J9C"
 };
 
-// Inicializa app, auth e db
+// Inicializa Firebase
 export const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getFirestore(app);
 
-// Mantém persistência local como no backup antigo
+// Persistência do login
 setPersistence(auth, browserLocalPersistence);
 
-// Exporta todas as funções usadas no app.js
+// Exportar funções que o app.js usa
 export { 
-  onAuthStateChanged, 
-  createUserWithEmailAndPassword, 
-  signInWithEmailAndPassword, 
-  signOut, 
-  updatePassword, 
-  doc, 
-  setDoc, 
-  getDoc, 
-  updateDoc, 
-  addDoc, 
-  getDocs, 
-  collection, 
-  query, 
-  where, 
-  serverTimestamp, 
-  orderBy 
+  onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, 
+  signOut, updatePassword, doc, setDoc, getDoc, updateDoc, addDoc, 
+  getDocs, collection, query, where, serverTimestamp, orderBy 
 };

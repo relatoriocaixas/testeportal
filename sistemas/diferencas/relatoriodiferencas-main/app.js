@@ -1,20 +1,10 @@
 // ===== IMPORTS =====
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
-import { getAuth, onAuthStateChanged, signOut, updatePassword } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
-import { 
-  getFirestore, collection, addDoc, getDocs, getDoc, doc, query, where, orderBy, limit, updateDoc, deleteDoc, serverTimestamp, Timestamp 
-} from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
-import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-storage.js";
-import { firebaseConfig } from "./firebaseConfig.js"; // cópia dentro da pasta diferenças
-
-// ===== INIT =====
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-const storage = getStorage(app);
+import { auth, db, storage, onAuthStateChanged, signOut, updatePassword } from "../firebaseConfig.js"; // usa a instância do portal
+import { collection, addDoc, getDocs, getDoc, doc, query, where, orderBy, limit, updateDoc, deleteDoc, serverTimestamp, Timestamp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+import { ref, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-storage.js";
 
 // ===== CONFIG LOCAL =====
-const ADMIN_MATS = ["6266", "4144", "70029"];
+const ADMIN_MATS = ["6266", "4144", "70029", "6414"];
 const BRL = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
 const el = id => document.getElementById(id);
 const qsel = sel => document.querySelectorAll(sel);
@@ -37,7 +27,12 @@ function parseDateInput(value) {
 
 // ===== DASHBOARD =====
 onAuthStateChanged(auth, async (user) => {
-  if (!user) { alert("Você precisa estar logado."); location.href="/"; return; }
+  if (!user) { 
+    alert("Você precisa estar logado."); 
+    location.href="/"; 
+    return; 
+  }
+
   CURRENT_USER = user;
   const us = await getDoc(doc(db,"usuarios", user.uid));
   CURRENT_USER_DATA = us.exists() ? us.data() : { matricula:(user.email||"").split("@")[0], nome:"" };
@@ -52,11 +47,10 @@ onAuthStateChanged(auth, async (user) => {
   el("btnAlterarSenha")?.addEventListener("click", async ()=>{
     const nova = prompt("Nova senha:");
     if(!nova) return;
-    try{ await updatePassword(auth.currentUser,nova); alert("Senha alterada."); }
+    try{ await updatePassword(user,nova); alert("Senha alterada."); }
     catch(e){ alert("Erro: "+e.message); }
   });
 
-  // Inputs cálculo sobra/falta
   ["valorFolha","valorDinheiro"].forEach(id=>{
     el(id)?.addEventListener("input", ()=>{
       const vf = parseFloat(el("valorFolha").value||0);

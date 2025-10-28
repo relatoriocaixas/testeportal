@@ -16,12 +16,18 @@ import {
   query,
   where,
   orderBy,
-  limit,
-  Timestamp
+  limit
 } from "../firebaseConfig.js"; // ajuste caminho se necessário
 
-import { ref, uploadBytes, getDownloadURL, deleteObject } 
-  from "https://www.gstatic.com/firebasejs/10.13.0/firebase-storage.js";
+// Importa Timestamp corretamente do Firestore
+import { Timestamp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+
+import {
+  ref,
+  uploadBytes,
+  getDownloadURL,
+  deleteObject
+} from "https://www.gstatic.com/firebasejs/10.13.0/firebase-storage.js";
 
 // ===== Config local =====
 const ADMIN_MATS = ["6266", "4144", "70029"];
